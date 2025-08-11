@@ -603,6 +603,130 @@
 //***
 //*
 
+// import 'dart:io';
+
+// import 'package:banco_senai/cadastrarConta.dart';
+// import 'package:banco_senai/conta.dart';
+// import 'package:banco_senai/contaCorrente.dart';
+// import 'package:banco_senai/contaPoupanca.dart';
+// import 'package:banco_senai/filtrarConta.dart';
+// import 'package:banco_senai/realizarTransferencia.dart';
+// import 'package:banco_senai/usuario.dart';
+
+// // Variável global para armazenar todas as contas
+// List<Conta> contas = [];
+// // Lista de usuários
+// List<Usuario> usuarios = [];
+
+// void iniciarMenu(Usuario usuarioLogado) {
+//   // Exemplo de contas iniciais para testes (criando os dois tipos de conta)
+//   contas.add(ContaCorrente("Ercione", 10000));
+//   contas.add(ContaPoupanca("Ercione", 2000));
+//   contas.add(ContaCorrente("Ana", 5000));
+//   contas.add(ContaPoupanca("Ana", 1500));
+
+//   while (true) {
+//     _exibirMenu(usuarioLogado);
+//     String opcaoEscolhida = _obterOpcao();
+
+//     if (opcaoEscolhida == '8') {
+//       print("Obrigado por usar o SenaiBank! 👋");
+//       break;
+//     }
+
+//     _lidarComOpcoes(opcaoEscolhida, usuarioLogado);
+//     print("\nPressione Enter para continuar...");
+//     stdin.readLineSync();
+//   }
+// }
+
+// // Exibe o menu de opções com base no papel do usuário.
+// void _exibirMenu(Usuario usuario) {
+//   print("\n---------------------------");
+//   print("Usuário logado: ${usuario.username} (${usuario.role})");
+//   print("Selecione uma opção: \n");
+//   print("---------------------------");
+
+//   // Opções para o administrador
+//   if (usuario.role == 'admin') {
+//     print(
+//       "1. Cadastrar Nova Conta\n"
+//       "2. Realizar Transferência Pix\n"
+//       "3. Exibir Todas as Contas\n"
+//       "4. Exibir Saldo de uma Conta\n"
+//       "5. Sacar\n"
+//       "6. Depositar\n"
+//       "7. Simular Rendimento (Poupança)\n"
+//       "8. Sair\n",
+//     );
+//   } else {
+//     // Opções para um cliente padrão
+//     print(
+//       "2. Realizar Transferência Pix\n"
+//       "4. Exibir Saldo de uma Conta\n"
+//       "5. Sacar\n"
+//       "6. Depositar\n"
+//       "7. Simular Rendimento (Poupança)\n"
+//       "8. Sair\n",
+//     );
+//   }
+// }
+
+// String _obterOpcao() {
+//   List<String> opcoesValidasMenu = ["1", "2", "3", "4", "5", "6", "7", "8"];
+//   String? opcao;
+
+//   do {
+//     stdout.write("Digite uma opção válida: ");
+//     opcao = stdin.readLineSync();
+//     if (opcao == null || !opcoesValidasMenu.contains(opcao)) {
+//       print("Opção inválida. Tente novamente!");
+//     }
+//   } while (opcao == null || !opcoesValidasMenu.contains(opcao));
+
+//   return opcao;
+// }
+
+// void _lidarComOpcoes(String opcao, Usuario usuario) {
+//   switch (opcao) {
+//     case "1":
+//       if (usuario.role == 'admin') {
+//         cadastrarConta(contas, usuarios);
+//       } else {
+//         print("Acesso negado. Esta opção é apenas para administradores.");
+//       }
+//       break;
+//     case "2":
+//       realizarTransferencia(contas);
+//       break;
+//     case "3":
+//       if (usuario.role == 'admin') {
+//         _exibirContas();
+//       } else {
+//         print("Acesso negado. Esta opção é apenas para administradores.");
+//       }
+//       break;
+//     case "4":
+//       _exibirSaldoConta(contas);
+//       break;
+//     case "5":
+//       _sacarConta(contas);
+//       break;
+//     case "6":
+//       _depositarConta(contas);
+//       break;
+//     case "7":
+//       _simularRendimento(contas);
+//       break;
+//   }
+// }
+
+// // Funções auxiliares (elas precisam estar definidas antes de serem chamadas no menu)
+// // A ordem não importa tanto aqui, desde que estejam antes da função principal.
+//**Funcional */
+
+// lib/menu.dart
+
 import 'dart:io';
 
 import 'package:banco_senai/cadastrarConta.dart';
@@ -613,25 +737,24 @@ import 'package:banco_senai/filtrarConta.dart';
 import 'package:banco_senai/realizarTransferencia.dart';
 import 'package:banco_senai/usuario.dart';
 
-// Variável global para armazenar todas as contas
 List<Conta> contas = [];
-// Lista de usuários
 List<Usuario> usuarios = [];
 
-void iniciarMenu(Usuario usuarioLogado) {
-  // Exemplo de contas iniciais para testes (criando os dois tipos de conta)
-  contas.add(ContaCorrente("Ercione", 10000));
-  contas.add(ContaPoupanca("Ercione", 2000));
-  contas.add(ContaCorrente("Ana", 5000));
-  contas.add(ContaPoupanca("Ana", 1500));
-
+// A função iniciarMenu agora recebe as contas
+void iniciarMenu(Usuario usuarioLogado, List<Conta> contas) {
   while (true) {
     _exibirMenu(usuarioLogado);
     String opcaoEscolhida = _obterOpcao();
 
     if (opcaoEscolhida == '8') {
-      print("Obrigado por usar o SenaiBank! 👋");
-      break;
+      print("Deslogando usuário ${usuarioLogado.username}.");
+      break; // Sai do menu, mas o programa continua.
+    }
+
+    // Adicione um case para a nova opção de sair do sistema
+    if (opcaoEscolhida == '9') {
+      print("Saindo do sistema. Até mais!");
+      exit(0); // Encerra o programa completamente
     }
 
     _lidarComOpcoes(opcaoEscolhida, usuarioLogado);
@@ -640,14 +763,12 @@ void iniciarMenu(Usuario usuarioLogado) {
   }
 }
 
-// Exibe o menu de opções com base no papel do usuário.
 void _exibirMenu(Usuario usuario) {
   print("\n---------------------------");
   print("Usuário logado: ${usuario.username} (${usuario.role})");
   print("Selecione uma opção: \n");
   print("---------------------------");
 
-  // Opções para o administrador
   if (usuario.role == 'admin') {
     print(
       "1. Cadastrar Nova Conta\n"
@@ -657,23 +778,34 @@ void _exibirMenu(Usuario usuario) {
       "5. Sacar\n"
       "6. Depositar\n"
       "7. Simular Rendimento (Poupança)\n"
-      "8. Sair\n",
+      "8. Deslogar\n"
+      "9. Sair do Sistema\n",
     );
   } else {
-    // Opções para um cliente padrão
     print(
       "2. Realizar Transferência Pix\n"
       "4. Exibir Saldo de uma Conta\n"
       "5. Sacar\n"
       "6. Depositar\n"
       "7. Simular Rendimento (Poupança)\n"
-      "8. Sair\n",
+      "8. Deslogar\n"
+      "9. Sair do Sistema\n",
     );
   }
 }
 
 String _obterOpcao() {
-  List<String> opcoesValidasMenu = ["1", "2", "3", "4", "5", "6", "7", "8"];
+  List<String> opcoesValidasMenu = [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+  ];
   String? opcao;
 
   do {
@@ -687,10 +819,14 @@ String _obterOpcao() {
   return opcao;
 }
 
+// O restante das funções do menu (lidarComOpcoes, exibirContas, etc.)
+// precisa ser atualizado para usar a lista de contas que agora é um parâmetro
+// da função iniciarMenu.
 void _lidarComOpcoes(String opcao, Usuario usuario) {
   switch (opcao) {
     case "1":
       if (usuario.role == 'admin') {
+        // A função cadastrarConta também precisa da lista de contas e usuários
         cadastrarConta(contas, usuarios);
       } else {
         print("Acesso negado. Esta opção é apenas para administradores.");
@@ -721,9 +857,7 @@ void _lidarComOpcoes(String opcao, Usuario usuario) {
   }
 }
 
-// Funções auxiliares (elas precisam estar definidas antes de serem chamadas no menu)
-// A ordem não importa tanto aqui, desde que estejam antes da função principal.
-
+// Função auxiliar para exibir as contas
 void _exibirContas() {
   if (contas.isEmpty) {
     print("Nenhuma conta cadastrada.");
