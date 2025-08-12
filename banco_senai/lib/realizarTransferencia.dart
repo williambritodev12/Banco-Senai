@@ -1,34 +1,4 @@
-// import 'dart:io';
-// import 'package:banco_senai/conta.dart';
-// import 'package:banco_senai/filtrarConta.dart';
-
-// void realizarTransferencia(List<Conta> contas) {
-//   print("\n--- TRANSFERÊNCIA ---");
-
-//   print("Conta de ORIGEM:");
-//   Conta? contaOrigem = filtrarConta(contas);
-//   if (contaOrigem == null) return;
-
-//   print("\nConta de DESTINO:");
-//   Conta? contaDestino = filtrarConta(contas);
-//   if (contaDestino == null) return;
-
-//   stdout.write("Digite o valor a ser transferido: ");
-//   double valor = double.parse(stdin.readLineSync()!);
-
-//   if (valor > 0 && valor <= contaOrigem.saldo) {
-//     contaOrigem.saldo -= valor;
-//     contaDestino.saldo += valor;
-//     print(
-//       "\nTransferência realizada com sucesso no valor de R\$${valor.toStringAsFixed(2)}, da conta de ${contaOrigem.titular} para a conta de ${contaDestino.titular}!",
-//     );
-//   } else {
-//     print("Saldo insuficiente ou valor inválido!");
-//   }
-// }
-
 import 'dart:io';
-
 import 'package:banco_senai/conta.dart';
 import 'package:banco_senai/filtrarConta.dart';
 
